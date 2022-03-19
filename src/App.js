@@ -2,20 +2,20 @@ import "./App.css";
 import { useState, useEffect } from "react";
 
 function App() {
-  // const storage = JSON.parse(localStorage.calculation);
+  let storage;
+  if (localStorage.getItem("calculation")) {
+    storage = JSON.parse(localStorage.calculation);
+  }
+
   const [calc, setCalc] = useState("");
   const [result, setResult] = useState("");
   const [mobile, setMobile] = useState(true);
   const [memory, setMemory] = useState(false);
-  // const [history, setHistory] = useState(storage ? storage : "");
-
-  // const [history, setHistory] = useState(storage);
-  useEffect(() => {
-    setCalc(result);
-  }, [result]);
+  const [history, setHistory] = useState("");
+  const [histories, setHistories] = useState(storage ?? []);
 
   const resize = () => {
-    if (window.innerWidth <= 769) {
+    if (window.innerWidth <= 950) {
       setMobile(true);
     } else {
       setMobile(false);
@@ -40,16 +40,23 @@ function App() {
     setCalc(calc + value);
   };
   // calculation
+
   const calculate = () => {
     setResult(eval(calc).toString());
 
     // save to local storage
-    // setCalc((prev) => {
-    //   const pastCalc = [...prev, "=", eval(calc).toString()];
-    //   const jsonPast = JSON.stringify(pastCalc);
-    //   localStorage.setItem("calculation", jsonPast);
-    // });
-    // setHistory(storage);
+
+    setCalc((prev) => {
+      const pastCalc = [...prev, "=", eval(calc).toString()];
+
+      setHistory(pastCalc);
+      setHistories((prev) => [...prev, history]);
+
+      const jsonPast = JSON.stringify(histories);
+      localStorage.setItem("calculation", jsonPast);
+
+      return [eval(calc).toString()];
+    });
   };
 
   const deleteItem = () => {
@@ -94,7 +101,11 @@ function App() {
       <button className="memory" onClick={() => toggle()}>
         M
       </button>
-      <div className={memory ? "memory-show" : "memory-hide"}>{}</div>
+      <div className={memory ? "memory-show" : "memory-hide"}>
+        {histories?.map((item) => <li key={item}>{item}</li>) || (
+          <span> No history just yet</span>
+        )}
+      </div>
       <div className={mobile ? "container" : "desktop-container"}>
         <div className={mobile ? "hidden" : "left-wrapper"}>
           <div className="empty"></div>
