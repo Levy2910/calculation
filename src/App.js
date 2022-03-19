@@ -2,12 +2,12 @@ import "./App.css";
 import { useState, useEffect } from "react";
 
 function App() {
-  const storage = JSON.parse(localStorage.calculation);
+  // const storage = JSON.parse(localStorage.calculation);
   const [calc, setCalc] = useState("");
   const [result, setResult] = useState("");
   const [mobile, setMobile] = useState(true);
   const [memory, setMemory] = useState(false);
-  const [history, setHistory] = useState(storage);
+  // const [history, setHistory] = useState(storage);
 
   useEffect(() => {
     setCalc(result);
@@ -43,12 +43,12 @@ function App() {
     setResult(eval(calc).toString());
 
     // save to local storage
-    setCalc((prev) => {
-      const pastCalc = [...prev, "=", eval(calc).toString()];
-      const jsonPast = JSON.stringify(pastCalc);
-      localStorage.setItem("calculation", jsonPast);
-    });
-    setHistory(storage);
+    // setCalc((prev) => {
+    //   const pastCalc = [...prev, "=", eval(calc).toString()];
+    //   const jsonPast = JSON.stringify(pastCalc);
+    //   localStorage.setItem("calculation", jsonPast);
+    // });
+    // setHistory(storage);
   };
 
   const deleteItem = () => {
@@ -93,7 +93,7 @@ function App() {
       <button className="memory" onClick={() => toggle()}>
         M
       </button>
-      <div className={memory ? "memory-show" : "memory-hide"}>{history}</div>
+      <div className={memory ? "memory-show" : "memory-hide"}>{}</div>
       <div className={mobile ? "container" : "desktop-container"}>
         <div className={mobile ? "hidden" : "left-wrapper"}>
           <div className="empty"></div>
