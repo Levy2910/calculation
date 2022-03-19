@@ -9,6 +9,7 @@ function App() {
   const [memory, setMemory] = useState(false);
   // const [history, setHistory] = useState(storage ? storage : "");
 
+  // const [history, setHistory] = useState(storage);
   useEffect(() => {
     setCalc(result);
   }, [result]);
